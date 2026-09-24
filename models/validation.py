@@ -89,13 +89,17 @@ def validate_record(record, seen_po_numbers=None):
             elif label in {"cartons", "case pack", "ext qty"} and numeric_value <= 0:
                 issues.append(f"line item {index}: invalid {label} value")
 
-        if item.case_pack is not None and item.cartons is not None and item.case_pack > 0 and item.cartons > 0:
-            expected_qty = item.case_pack * item.cartons
-            if item.ext_qty is not None and item.ext_qty != expected_qty:
-                issues.append(f"line item {index}: ext qty mismatch (expected {expected_qty}, found {item.ext_qty})")
+        case_pack_value = _as_int(item.case_pack)
+        cartons_value = _as_int(item.cartons)
+        ext_qty_value = _as_int(item.ext_qty)
 
-        if item.cost is not None and item.ext_qty is not None and item.ext_cost is not None:
-            expected_ext_cost = _as_float(item.cost) * _as_int(item.ext_qty)
+        if case_pack_value is not None and cartons_value is not None and case_pack_value > 0 and cartons_value > 0:
+            expected_qty = case_pack_value * cartons_value
+            if ext_qty_value is not None and ext_qty_value != expected_qty:
+                issues.append(f"line item {index}: ext qty mismatch (expected {expected_qty}, found {ext_qty_value})")
+
+        if item.cost is not None and ext_qty_value is not None and item.ext_cost is not None:
+            expected_ext_cost = _as_float(item.cost) * ext_qty_value
             actual_ext_cost = _as_float(item.ext_cost)
             if expected_ext_cost is not None and actual_ext_cost is not None and abs(expected_ext_cost - actual_ext_cost) > 0.01:
                 issues.append(f"line item {index}: ext cost mismatch (expected {expected_ext_cost}, found {actual_ext_cost})")
