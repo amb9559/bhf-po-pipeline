@@ -39,11 +39,15 @@ We added the validation layer so the pipeline can flag bad purchase order record
 
 ### Step 3: output generation
 
-We are now building the export layer so cleaned PO records can be written out in a usable format:
+We wired the full pipeline together so purchase orders can move from raw input to cleaned output:
 
-- Excel export for the processed data
-- SQLite load for storing normalized records
-- validation tests for the output layer
+- loaded files from `input_data/`
+- detected the file layout automatically
+- parsed the PO data into normalized records
+- validated records before saving them
+- exported the final records to Excel
+- inserted the same cleaned records into SQLite
+- added an end-to-end pipeline test to verify the full flow
 
 ## How to run the project
 
