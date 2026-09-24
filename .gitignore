@@ -1,0 +1,5 @@
+__pycache__/
+.pytest_cache/
+.venv/
+Data_Engineer_Take_Home_Assignment/
+*.pyc
