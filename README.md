@@ -1,44 +1,57 @@
 # bhf-po-pipeline
 
-This project reads vendor purchase order text files, parses the different formats, validates the data, and prepares it for Excel and SQLite output.
+This project reads purchase order text files, extracts the data in a consistent format, checks the quality of each record, and prepares the cleaned result for Excel and SQLite output.
 
-## Project layout
+## Project structure
 
-- `app/` - entry points for the pipeline
-- `parsers/` - code for reading and extracting data from each PO layout
-- `models/` - data models and validation helpers
-- `outputs/` - Excel and SQLite output logic
-- `tests/` - checks for parsing and ingestion
+- `app/` - pipeline entry points
+- `parsers/` - logic for each PO file layout
+- `models/` - PO data models and validation rules
+- `outputs/` - Excel export and SQLite loading
+- `tests/` - automated checks for parsing, validation, and output
+- `input_data/` - raw purchase order source files
 
 ## Current branch
 
 - `feature/po-pipeline`
 
-## Input files
+## Current step progress
 
-The raw purchase order files are kept in `input_data/`.
-
-## Step 1: parsing and file loading
-
-This step is complete.
+### Step 1: parsing and file loading
 
 We added the first working pieces of the pipeline:
 
-- a detector to recognize the fixed-width and key/value PO formats
-- a parser for the table-style purchase order layout
-- a parser for the label-based purchase order layout
-- a loader that reads all input files from `input_data/`
-- tests to confirm the detection and parsing work correctly
+- a detector to recognize fixed-width and key/value purchase order layouts
+- a parser for the table-style PO format
+- a parser for the label-based PO format
+- a loader that reads all files from `input_data/`
+- tests to confirm the parsing logic is working correctly
 
-## Step 2: validation checks
+### Step 2: validation checks
 
-This step is also complete.
+We added the validation layer so the pipeline can flag bad purchase order records before they are exported:
 
-We added the validation layer so the pipeline can flag bad purchase orders before they are exported:
+- required field checks for header data and line items
+- duplicate PO number detection
+- invalid value checks for UPC, department, negatives, and zero-value fields
+- arithmetic checks for ext qty and ext cost
+- basic referential integrity checks for item-level consistency
 
-- required field checks for header and line item data
-- ext qty validation against cartons and case pack values
-- ext cost validation against quantity and unit cost
-- issue tracking on each parsed PO record
-- tests covering valid records, missing required values, and arithmetic mismatches
+### Step 3: output generation
+
+We are now building the export layer so cleaned PO records can be written out in a usable format:
+
+- Excel export for the processed data
+- SQLite load for storing normalized records
+- validation tests for the output layer
+
+## How to run the project
+
+From the project root, you can run the test suite with:
+
+```bash
+python -m pytest -q
+```
+
+The input data is expected in the `input_data/` folder.
 
