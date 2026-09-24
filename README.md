@@ -30,3 +30,15 @@ We added the first working pieces of the pipeline:
 - a loader that reads all input files from `input_data/`
 - tests to confirm the detection and parsing work correctly
 
+## Step 2: validation checks
+
+This step is also complete.
+
+We added the validation layer so the pipeline can flag bad purchase orders before they are exported:
+
+- required field checks for header and line item data
+- ext qty validation against cartons and case pack values
+- ext cost validation against quantity and unit cost
+- issue tracking on each parsed PO record
+- tests covering valid records, missing required values, and arithmetic mismatches
+
