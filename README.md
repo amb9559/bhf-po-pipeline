@@ -30,14 +30,3 @@ We added the first working pieces of the pipeline:
 - a loader that reads all input files from `input_data/`
 - tests to confirm the detection and parsing work correctly
 
-### Check run
-
-We verified this step with pytest.
-
-Command used:
-
-`C:/Users/ambuj/AppData/Local/Python/pythoncore-3.14-64/python.exe -m pytest -q tests/test_layout_detector.py tests/test_input_loader.py`
-
-Result:
-
-`5 passed in 0.08s`
